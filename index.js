@@ -1,9 +1,36 @@
 function isValidWalk(walk) {
-  const isReturnToStartPoint = isWalkReturnToStartPoint(walk);
-  if (walk.length === 10 && isReturnToStartPoint) return true;
+  const sum = { n: 0, s: 0, e: 0, w: 0 };
+  walk.map((value) => sum[value]++);
+  return walk.length === 10 && sum.n === sum.s && sum.e === sum.w
+    ? true
+    : false;
+}
+
+// another ways to do it
+// sol 1.1
+function isValidWalk1(walk) {
+  if (walk.length === 10 && isWalkReturnToStartPoint(walk)) return true;
   else return false;
 }
 
+function isWalkReturnToStartPoint(walk) {
+  const sum = { n: 0, s: 0, e: 0, w: 0 };
+  walk.map((value) => sum[value]++);
+  return sum.n === sum.s && sum.e === sum.w;
+}
+
+// sol 2.0
+function isWalkReturnToStartPoint2(walk) {
+  const isReturnToVerticalStartPoint =
+    walk.filter((v) => ['n'].includes(v)).length ===
+    walk.filter((v) => ['s'].includes(v)).length;
+  const isReturnToHorizontalStartPoint =
+    walk.filter((v) => ['e'].includes(v)).length ===
+    walk.filter((v) => ['w'].includes(v)).length;
+  return isReturnToVerticalStartPoint && isReturnToHorizontalStartPoint;
+}
+
+// sol 3.0
 const walkValuesMap = {
   n: 1,
   s: -1,
@@ -11,7 +38,7 @@ const walkValuesMap = {
   w: -1,
 };
 
-function isWalkReturnToStartPoint(walk) {
+function isWalkReturnToStartPoint3(walk) {
   const isReturnToVerticalStartPoint =
     walk.reduce(
       (acc, value) =>
